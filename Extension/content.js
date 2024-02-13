@@ -149,11 +149,11 @@ function replaceNumbersRec(node, parentNode, end_execution_time) {
 }
 
 // Function to replace all numbers in the text content of the page
-function replaceNumbersWithRoman(max_execution_time = 2500) { // Maximum execution time in milliseconds
+function replaceNumbersWithRoman(target=document.body, target_parent=null, max_execution_time=2500) { // Maximum execution time in milliseconds
     const begin_time = Date.now(); // Start time in milliseconds
     const end_execution_time = begin_time + max_execution_time; // Maximum execution time in milliseconds
     console.log('The page is being processed');
-    replaceNumbersRec(document.body, null, end_execution_time);
+    replaceNumbersRec(target, target_parent, end_execution_time);
 }
 
 // Execute when the page is loaded
