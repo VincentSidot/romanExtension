@@ -15,3 +15,10 @@ This is a chrome extension that converts the numbers on a webpage into roman num
 4. Enable developer mode
 5. Click on `Load unpacked`
 6. Select the folder where the repository is located
+
+## Todo
+
+- Run on update of webpages
+- Try to profile code for optimisations
+- See why it's not working on google
+- Pay 5$ to upload extension
