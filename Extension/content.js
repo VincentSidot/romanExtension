@@ -30,9 +30,51 @@ const roman_keys = Object.keys(roman_dict);
 const roman_values = Object.values(roman_dict);
 const roman_length = roman_keys.length;
 
+const tooltip_style = `
+<style>
+    .tooltip {
+        font-family: Allerta Stencil;
+        font-style: italic;
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        font-style: normal;
+
+        visibility: hidden;
+        width: 50px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 50%;
+    margin-left: -60px;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>`
+
+const html_font = `
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Allerta+Stencil" />
+`
+// Add the font to the head of the document
+document.head.insertAdjacentHTML('beforeend', html_font);
+
+// Add the tooltip style to the head of the document
+document.head.insertAdjacentHTML('beforeend', tooltip_style);
 
 // Convert roman numbers to arabic numbers
 function convertToRoman(num) {
+    let old_num = num;
     if (num < 1 || num > 3999999) {
         return num;
     }
@@ -44,7 +86,9 @@ function convertToRoman(num) {
             romanNumeral += roman_values[i];
         }
     }
-    return romanNumeral;
+    let romanNumeralSpan = '<span class="tooltip">' + romanNumeral + '<span class="tooltiptext">' + old_num + '</span></span>';
+
+    return romanNumeralSpan;
 }
 
 // Memoization function wrapper
@@ -65,11 +109,8 @@ function checkStringAndReplace(string) {
     // Return false if the string does not contain a number
     // else return the new string with the numbers replaced by their roman equivalent
     const regex = /\d+/g;
-    const span_style = 'font-family: Impact;';
-    const begin_span = '<span style="' + span_style + '">';
-    const end_span = '</span>';
     const replaceFunction = function(match) {
-        return begin_span + memoize(convertToRoman)(parseInt(match)) + end_span;
+        return memoize(convertToRoman)(parseInt(match));
     };
 
     let new_string = string.replace(regex, replaceFunction);
@@ -82,11 +123,11 @@ function checkStringAndReplace(string) {
 
 function convertTextToNode(textNode, parentNode) {
     // Convert the text node to a span node
-    const span = document.createElement('span');
     const new_html_content = checkStringAndReplace(textNode.textContent);
     if (new_html_content === false) {
         return; // If the text node does not contain a number, do not replace it
     }
+    const span = document.createElement('span');
     span.innerHTML = new_html_content;
     parentNode.replaceChild(span, textNode);
 }
