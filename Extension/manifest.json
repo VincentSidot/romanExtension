@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "ConvertNumbersToRomanNumerals",
+    "version": "0.1",
+    "description": "Converts numbers to Roman numerals in a web page",
+    "permissions": ["activeTab"],
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "exclude_globs": ["*://*.google.*/*"],
+          "js": ["content.js"]
+        }
+    ]
+  }
